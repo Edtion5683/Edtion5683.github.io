@@ -1,0 +1,26 @@
+<%- partial('_partial/head') %>
+<body>
+  <script type="text/javascript">
+    // fix sidebar flashing
+    (function(){
+      if (localStorage.getItem('sidebarState') == 'true') {
+        document.body.className="sideShow"
+      }
+    })()
+  </script>
+  <div id="container">
+    <%- partial('_partial/sidebar', null, {cache: !config.relative_link}) %>
+    <div class="wrap">
+      <%- partial('_partial/side') %>
+      <%- partial('_partial/header') %>
+      <section id="main" class="content">
+        <%- body %>
+      </section>
+    <%- partial('_partial/footer') %>
+    </div>
+  </div>
+  <%- js('js/simple_build') %>
+  <%- partial('_script/comments.ejs') %>
+  <%- partial('_script/analytics.ejs') %>
+</body>
+</html>

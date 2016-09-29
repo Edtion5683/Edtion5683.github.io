@@ -1,0 +1,24 @@
+.side
+  position fixed
+  bottom 40px
+  transition side-time all
+  .top, .arrows
+    width 35px
+    height 35px
+    border 1px solid color-none
+    line-height 35px
+    text-align center
+    cursor pointer
+    background-color color-hover
+    border-radius 3px
+    &:after
+      content '\e602'
+      font-family iconfont
+      font-size 16px
+      color color-font
+      // 居中
+    &:hover:after
+     color color-danger
+  .top
+    margin-bottom 1px
+    transform rotate3d(0, 0, 1, -90deg)

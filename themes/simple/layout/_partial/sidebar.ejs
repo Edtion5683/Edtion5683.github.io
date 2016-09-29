@@ -1,0 +1,52 @@
+<aside class="sidebar">
+  <div class="head-icon">
+  <% if (theme.menu.about) {%>
+    <a href="<%= theme.menu.about %>">
+      <img src="<%= theme.avatar %>">
+    </a>
+  <% } else{ %>
+    <img src="<%= theme.avatar %>">
+  <% } %>
+  </div>
+  <div class="name"><%= theme.author %></div>
+  <div class="desc">
+    <h4><%= config.description %></h4>  
+  </div>
+  <nav class="side-nav">
+    <div class="nav-item">
+      <a href="<%= theme.menu.home %>">
+        <span>
+          <%= site.posts.length %>
+        </span>
+        <span><%= __('sidebar.post')  %></span>
+      </a>
+    </div>
+    <div class="nav-item">
+      <a href="<%= theme.menu.categories %>">
+        <span>
+          <%= site.categories.length %>
+        </span>
+        <span><%= __('sidebar.categories') %></span>
+      </a>
+    </div>
+    <div class="nav-item">
+      <a href="<%= theme.menu.tags %>">
+        <span>
+          <%= site.tags.length %>
+        </span>
+        <span><%= __('sidebar.tags') %></span>
+      </a>
+    </div>
+  </nav>
+  <% if (theme.social) { %>
+  <div class="social-wrap">
+    <% for (var name in theme.social) { %>
+    <a href="<%= theme.social[name] %>" target="_blank">
+      <div class="item">
+        <i class="i-<%= name %>"></i>
+      </div>
+    </a>
+    <% } %>
+  </div>
+  <% } %>
+</aside>

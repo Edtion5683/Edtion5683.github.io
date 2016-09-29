@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!-- dns prefetch -->
+    <link rel="dns-prefetch" href="//7fvhwe.com1.z0.glb.clouddn.com/">
+    <link rel="dns-prefetch" href="//static.duoshuo.com/">
+    <% if (theme.disqus_shortname) { %>
+    <link rel="dns-prefetch" href="//<%= theme.disqus_shortname %>.disqus.com">    
+    <% } %>
+    <link rel="dns-prefetch" href="//hm.baidu.com/">
+    <link rel="dns-prefetch" href="//www.google-analytics.com/">
+    <link rel="dns-prefetch" href="//tajs.qq.com/">
+    <%
+    var title = page.title;
+    var subtitle = page.subtitle
+    if (is_archive()){
+      title = __('title.archive');
+
+      if (is_month()){
+        title += ': ' + page.year + '/' + page.month;
+      } else if (is_year()){
+        title += ': ' + page.year;
+      }
+    } else if (is_category()){
+      title = __('title.category') + ': ' + page.category;
+    } else if (is_tag()){
+      title = __('title.tag') + ': ' + page.tag;
+    }
+    %>
+    <title>
+    <% if (title){ %>
+    <%= title %> 
+      <% if(subtitle) { %>| <%= subtitle %><% } else { %>| <%= config.title %> <% } %>
+    <% } else { %>
+    <%= config.title %>
+    <% } %>
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="alternate" href="<%- theme.rss %>" title="<%= config.title %>" type="application/atom+xml">
+    <% if (theme.favicon){ %>
+    <link rel="icon" href="<%- theme.favicon %>">
+    <% } %>
+    <style>
+      /* menu nav active status */
+      <% for (var name in theme.menu) { %>
+        .menu-<%= name %> .menu-item-<%= name %> {
+          color: #b71c1c
+        }
+      <% } %>
+    </style>
+    <%- css('css/style') %>
+  </head>
