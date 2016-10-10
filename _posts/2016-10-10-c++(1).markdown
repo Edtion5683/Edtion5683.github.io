@@ -226,7 +226,8 @@ C++ 支持单行和多行注释。在注释中可以使用所有的字符，并�
 C++ 注释以`/*`开始和以`*/`结束。例如:
 ```
     /* This is a comment */
-
+```
+```
     /* C++ comments can  also
     * span multiple lines
     */
@@ -236,7 +237,8 @@ C++ 注释以`/*`开始和以`*/`结束。例如:
 ```
     #include <iostream>
     using namespace std;
-
+```
+```
     main()
     {
         cout << "Hello World"; // prints Hello World
