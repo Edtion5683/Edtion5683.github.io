@@ -227,8 +227,7 @@ C++ 注释以`/*`开始和以`*/`结束。例如:
 
 ```
     /* This is a comment */
-```
-```
+
     /* C++ comments can  also
     * span multiple lines
     */
@@ -239,8 +238,7 @@ C++ 注释以`/*`开始和以`*/`结束。例如:
 ```
     #include <iostream>
     using namespace std;
-```
-```
+
     main()
     {
         cout << "Hello World"; // prints Hello World
