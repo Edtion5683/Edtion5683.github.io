@@ -1,0 +1,638 @@
+---
+layout:     post
+title:      "C++基础(二)"
+subtitle:   " \"Hello World, Hello C++\""
+date:       2016-10-10 12:00:00
+author:     "Edtion"
+catalog: true
+tags:
+    - C++语法
+---
+
+> 转自：[极客学院C++基础教程][1] 修改部分汉语逻辑（极客学院能翻译成中文并免费开放已经做的很棒了，不要要求太多）
+
+- 开始写第二篇了，上一篇只能算是初期准备，只要是有点语言基础的看一眼应该都会理解。真正的C++学习，从这篇才算是开始吧。
+
+
+# 数据类型
+
+当在使用任何编程语言编程时，需要使用各种不同的变量来存储不同的信息。变量只是让内存预留位置来存储一些值。这意味着，当你创建一个变量时在内存中会保留一些空间给该变量。
+
+你可能喜欢使用像字符类型，宽字符，整数，浮点数，双精度浮点数，布尔类型等各种数据类型来存储信息。操作系统基于变量的数据类型来分配内存空间和决定什么可以存储在这个保留内存的区域。
+
+### 基本内置类型
+
+C++ 给程序员提供了一系列丰富的内置类型以及用户定义的数据类型。下表列出了七个基本的 C++ 数据类型:
+
+|类型	|关键字|
+|-|-|
+|Boolean|	bool|
+|Character|	char|
+|Integer	|int|
+|Floating point	|float|
+|Double floating point|	double|
+|Valueless|	void|
+|Wide character	|wchar_t|
+
+上面的几个基本类型可以使用一个或多个如下的修饰符这来修饰:
+
+- signed
+- unsigned
+- short
+- long
+
+下面的表显示了变量类型，该类型的值在内存中需要多少内存空间来存储，该类型能够表示的最大值和最小值。
+
+|类型	|长度	|范围|
+|-|-|-|
+|char	|1byte	|-127 - 127 或者 0 - 255|
+|unsigned char	|1byte|	0 - 255|
+|signed char|	1byte	|-127 - 127|
+|int	|4bytes	|-2147483648 - 2147483647|
+|unsigned int|	4bytes	|0 - 4294967295|
+|signed int	|4bytes	|-2147483648 - 2147483647|
+|short int	|2bytes	|-32768 - 32767|
+|unsigned short int|	Range|	0 - 65,535|
+|signed short int	|Range	|-32768 - 32767|
+|long int	|4bytes	|-2,147,483,647 - 2,147,483,647|
+|signed long int|	4bytes|	和 long int 一样|
+|unsigned long int|	4bytes|	0 - 4,294,967,295|
+|float	|4bytes	|+/- 3.4e +/- 38 (~7 位数字)|
+|double	|8bytes	|+/- 1.7e +/- 308 (~15 位数字)|
+|long double|	8bytes	|+/- 1.7e +/- 308 (~15 位数字)|
+|wchar_t|	2 或者 4 bytes|	1 个宽字符|
+
+变量类型占用空间的实际大小可能和上表展示的有些不同,这取决于所使用的编译器和电脑操作系统。
+
+下面示例将输出各种数据类型在计算机上实际占用的内存空间大小。
+
+```
+    #include <iostream>
+    using namespace std;
+
+    int main()
+    {
+        cout << "Size of char : " << sizeof(char) << endl;
+        cout << "Size of int : " << sizeof(int) << endl;
+        cout << "Size of short int : " << sizeof(short int) << endl;
+        cout << "Size of long int : " << sizeof(long int) << endl;
+        cout << "Size of float : " << sizeof(float) << endl;
+        cout << "Size of double : " << sizeof(double) << endl;
+        cout << "Size of wchar_t : " << sizeof(wchar_t) << endl;
+        return 0;
+    }
+```
+    
+这个示例使用 **endl**，这个表示在每一行之后插入一个换行符，<< 操作符被用来将多个值输出到屏幕上。我们也使用 **sizeof()** 函数来获得各种数据类型的存储大小。
+
+上面的代码编译和执行时,它会产生以下结果，这个可能会随着机器的不同而显示不同的结果:
+
+```
+    Size of char : 1
+    Size of int : 4
+    Size of short int : 2
+    Size of long int : 4
+    Size of float : 4
+    Size of double : 8
+    Size of wchar_t : 4
+```
+    
+### typedef 声明
+你可以使用 **typedef** 为已经存在的数据类型起一个新的名称。下面是一个使用 **typedef** 定义一个新类型的简单语法方式:
+
+```
+    typedef type newname;
+```
+    
+例如,下面告诉编译器，**feet** 是 **int** 的另一个名字:
+
+```
+    typedef int feet;
+```
+
+现在，下面的声明是完全合法的，创建一个整数变量名称为 **distance**:
+
+```
+    feet distance;
+```
+
+### 枚举类型
+枚举类型声明了一个可选的类型名和一组值为零的或多个标识符的类型。每个枚举器是一个常数，它的类型是枚举。
+
+创建一个枚举类型需要使用关键字 **enum**。枚举类型的一般形式是:
+
+    enum enum-name { list of names} var-list;
+在这里，enum-name 是枚举类型名。list of name 是由逗号分隔开的。
+
+例如，下面的代码定义了一个称为 color 的颜色枚举类型，并且变量 c 是一个 color 类型的枚举变量。最后， c 被赋值为 “blue”。
+
+```
+    enum color { red,green,blue} c;
+    c = blue;
+```
+
+默认情况下,枚举类型花括号中第一个变量被赋值为 0，第二个变量赋值为 1，第三个赋值为 2，依此类推。但是你也可以给某个指定变量一个初始值。例如,在下面的枚举类型, **green** 将会被初始化为 5。
+
+```
+    enum color { red, green=5, blue };
+```
+
+这里，**blue** 的值将会变成 6，因为每个变量都会比它前一个变量大 1。
+
+
+# 变量类型
+
+变量名给我们提供了在程序中我们可以使用的空间信息。每个变量在 C++ 中都有一个特定的类型，它决定变量在内存中的大小和布局；在该内存空间可以存放取值的范围；和一组可以应用于该变量的操作。
+
+一个变量的名称可以由字母、数字和下划线字符组成。它必须以字母或下划线开始。大写和小写的字母是不同的，因为 C++ 是区分大小写的:
+
+C++ 中有以下基本变量类型，我们在上一节已经介绍过:
+
+|类型	|描述|
+|-|-|
+|bool	|存储的值为 true 或者 false|
+|char	|通常是 8 位(一位字节)。它是个整数类型。|
+|int	|机器中最常用的整数类型。|
+|float	|单精度浮点类型的值。|
+|double	|双精度浮点类型的值。|
+|void	|代表着缺失类型。|
+|wchar_t	|一个宽字符类型。|
+
+C++ 还允许定义各种其他类型的变量，我们将在后续章节将会介绍的，比如 **Enumeration**，指针，数组，引用，数据结构和类。
+
+下一节将介绍如何定义，声明和使用各种类型的变量。
+
+### C++ 中变量的定义
+
+一个变量定义意味着告诉编译器，存储在哪里以及需要多少的存储空间。变量定义要指定数据类型，同时包含该类型的一个或多个变量的列表：
+
+```
+    type variable_list;
+```
+
+在这里，**type** 必须是一个有效的 C++ 数据类型，包括 char，w_char，int，float，double，bool 或者任何用户自定义的对象等。**variable_list** 要包含一个或多个由逗号分隔的标识符。如下是一些有效的声明示例：
+
+```
+    int i, j, k;
+    char c, ch;
+    float f, salary;
+    double d;
+```
+
+**int i,j,k;** 这一行同时声明和定义了变量 i，j 和 k，这条语句指示编译器创建类型为 int，名称为 i，j 和 k 的变量。
+
+变量在声明的同时可以进行初始化(分配一个初始值)。初始化由一个等号后面跟着一个常数表达式如下:
+
+```
+    type variable_name = value;
+```
+
+如下是一些示例：
+
+```
+    extern int d = 3, f = 5;    // declaration of d and f. 
+    int d = 3, f = 5;           // definition and initializing d and f. 
+    byte z = 22;                // definition and initializes z. 
+    char x = 'x';               // the variable x has the value 'x'.
+```
+
+没有初始化的定义：静态类型的变量会隐式地被初始化为 NULL(所有位值为0)，而其他的所有变量的初始值是未知的。
+
+### C++ 中变量声明
+
+变量声明为编译器提供保证，对于给定的类型和名称的变量是唯一的，从而编译器在进一步进行编译变量时不需要变量的完整细节。变量声明只是在编译时有意义的，因为编译器在进行程序的链接时需要变量声明的信息。
+
+当你使用多个文件，并且你自己定义的变量放在其中一个文件里，变量的声明将对程序的链接很有用。您可以使用 **extern** 关键字来声明一个放在任何位置的变量。虽然你在你的 C++ 程序中可以声明一个变量多次，但它在一个文件中，一个函数或一块代码中只能定义一次。
+
+#### 示例
+
+试试下面的例子，一个变量已经在顶部进行了声明，但同时它也在 main 函数中被定义了:
+
+```
+    #include <iostream>
+    using namespace std;
+
+    // Variable declaration:
+    extern int a, b;
+    extern int c;
+    extern float f;
+
+    int main ()
+    {
+        // Variable definition:
+        int a, b;
+        int c;
+        float f;
+
+        // actual initialization
+        a = 10;
+        b = 20;
+        c = a + b;
+
+        cout << c << endl ;
+
+        f = 70.0/3.0;
+        cout << f << endl ;
+
+        return 0;
+    }
+```
+
+上面的代码编译和执行后，它产生以下结果:
+
+```
+    30
+    23.3333
+```
+
+相同的概念也可以应用于函数声明，当你对一个函数进行声明时，它的定义可以在其他任何地方。例如:
+
+```
+    // function declaration
+    int func();
+
+    int main()
+    {
+        // function call
+        int i = func();
+    }
+
+    // function definition
+    int func()
+    {
+        return 0;
+    }
+```
+
+### 左值和右值
+
+C++ 中有两种表达式：
+
+- 左值：指向内存位置的表达式称为左值表达式。一个左值可能出现在赋值语句的左边或右边。
+- 右值：右值是指一个数据值存储在某个内存地址中。一个右值是一个表达式，它不能被赋值，这意味着一个右值可能出现在赋值语句的右边，而不是左边。
+
+变量是左值,因此可能会出现在赋值语句的左边。数字字面值是右值，因此不能被赋值，不能出现赋值语句的左边。下面是一个有效的语句:
+
+```
+    int g = 20;
+```
+
+但如下却不是一个有效的赋值语句，会产生编译期错误:
+
+```
+    10 = 20；
+```
+
+# 变量作用域
+
+变量作用域就是指变量在程序中能够操作的区域，通常按照在程序中不同地方声明可以分为如下三类：
+
+- 局部变量：在函数中或者由花括号括起来的代码块中声明。
+- 形式变量：在函数的参数中声明，也叫形参。
+- 全局变量：在所有函数之外声明的变量。
+
+关于函数及函数参数的内容我们会在后续章节中学习。这里我们首先学习关于局部变量和全局变量的相关内容。
+
+### 局部变量
+在函数或代码块内部声明的变量称为局部变量。他们在函数体内声明后仅能被其声明的所在函数体内部的后续语句操作。局部变量不能被函数外部访问到。下面就是使用局部变量的例子。
+
+```
+    #include <iostream>
+    using namespace std;
+
+    int main ()
+    {
+      // Local variable declaration:
+      int a, b;
+      int c;
+
+      // actual initialization
+      a = 10;
+      b = 20;
+      c = a + b;
+
+      cout << c;
+
+      return 0;
+    }
+```
+
+### 全局变量
+全局变量通常会被声明定义在所有函数体的外面，大部分情况下是在程序的最上方定义。全部变量的生命周期就是进程从开始到程序执行结束的整个过程。
+
+全局变量可以被任何函数访问。也就是说，全局变量一旦被声明，将在程序的整个生命周期内都是有效的。下面是使用全局和局部变量的例子：
+
+```
+    #include <iostream>
+    using namespace std;
+
+    // Global variable declaration:
+    int g;
+
+    int main ()
+    {
+      // Local variable declaration:
+      int a, b;
+
+      // actual initialization
+      a = 10;
+      b = 20;
+      g = a + b;
+
+      cout << g;
+
+      return 0;
+    }
+```
+
+程序中的局部变量和全局变量可以有相同的变量名称。但是在局部变量所在函数体内，使用变量名仅能访问到局部变量。比如：
+
+```
+    #include <iostream>
+    using namespace std;
+
+    // Global variable declaration:
+    int g = 20;
+
+    int main ()
+    {
+      // Local variable declaration:
+      int g = 10;
+
+      cout << g;
+
+      return 0;
+    }
+```
+
+上述例子中的程序被编译并执行后，将显示如下结果：
+
+```
+    10
+```
+
+### 局部变量和全局变量的初始化
+局部变量被定义后，默认情况下，系统并不会对该变量进行初始化，所以需要程序员进行初始化操作。与之不同的是，全局变量定义后会被编译系统自动初始化，具体初始化的值如下：
+
+|数据类型	|默认初始化的值|
+|-|-|
+|int	|0|
+|char	|'\0'|
+|float	|0|
+|double	|0|
+|pointer	|NULL|
+
+适如其分的给变量初始化是一个很好的编程习惯，否则，有时程序会出现很多意想不到的错误。
+
+
+
+# 常量
+
+常量就是程序中不能被修改的固定的值，也称为字面值。
+
+常量可以是任何基础数据类型，比如整型，浮点型，字符型，字符串和布尔类型。
+
+通常情况下常量被认为是定义后不能更改的变量。
+
+### 整型常量
+整数常量可以是十进制、八进制或十六进制常量。对于十六进制可以用 ox 或 OX 前缀来标示，可以用 O 前缀来标示八进制，十进制默认不需要前缀标志。
+
+整数常量也可以与 U 和 L 后缀一起搭配使用，相应的来表示无符号和长整型。后缀对大小写不敏感。
+
+下面是整型常量的一些例子：
+
+```
+    212 // 合法   
+    215u// 合法  
+    0xFeeL  // 合法  
+    078 // 不合法: 8不是合法的八进制  
+    032UU   // 不合法: U后缀不能重复使用
+```
+
+下面试其他的关于不同类型的整型常量：
+
+```
+    85 // 十进制
+    0213   // 八进制
+    0x4b   // 十六进制
+    30 // 整型
+    30u// 无符号整型
+    30l// 长整型
+    30ul   // 无符号长整型
+```
+
+### 浮点常量
+浮点常量由整数部分、小数点、小数部分和一个指数部分组成。可以使用十进制或者指数的形式来表示浮点常量。
+
+使用指数表示时，必须包含小数点,指数,或两者同时使用。相对应的，使用十进制形式表示，必须包含整数部分，小数部分，或两者兼而有之。有符号指数可以用 e 或 E 来表示。
+
+下面是一些浮点常量的一些例子：
+
+```
+    3.14159   // 合法
+    314159E-5L// 合法
+    510E  // 不合法: 指数部分不完整
+    210f  // 不合法: 没有整数部分
+    .e55  // 不合法: 无整数或小数部分  
+```
+    
+### 布尔常量
+C++ 中只有两个布尔类型的常量，他们都是标准 C++ 中的关键词。
+
+- true ：代表肯定的
+- false ：代表否定的
+
+需要注意的是不可以将true看做是1，也不可以将false看做是0.
+
+### 字符常量
+字符常量应该用单引号括起来。如果字符常量以 L 开头（仅大写），那么它将是一个宽字符常量且需要使用 **wchar_t** 类型的变量来存储。否则，它将是个窄字符常量且存储在 **char** 类型的变量中。
+
+字符常量可以还是一个普通字符（比如 'x'）、转义字符（'\t'）或者是一个通用字符（比如 '\u02C0'）.
+
+C++ 中有一些使用反斜杠标志的字符，他们具有特殊的意义，且可以用于表示换行（\n）或者 tab 键（\t）。下面是一些转义字符的列表：
+
+|转义字符	|意义|
+|-|-|
+|\\\  |	\字符|
+|\\\'	|\'字符|
+|\\\"|	\"字符|
+|\?|	?问号字符|
+|\a	|警告|
+|\b	|退格|
+|\f|	换页|
+|\n	|换行|
+|\r|	回车|
+|\t|	横向tab|
+|\ooo	|八进制的一到三位数|
+|\xhh...|	一位或多位的十六进制数|
+
+下面是一些展示转义字符的例子：
+
+```
+    #include <iostream>
+    using namespace std;
+
+    int main()
+    {
+       cout << "Hello\tWorld\n\n";
+       return 0;
+    }
+```
+
+当上述代码先编译再执行后，会出现如下结果：
+
+```
+    Hello   World
+```
+
+### 字符串常量
+字符串常量需要使用双引号括起来。字符串常量跟字符常量一样，包括：普通字符、转义字符和通用字符。
+
+可以使用空格将一行字符分割成多个行。
+
+如下是一些字符串常量的例子。所有的三种形式是相同的字符串。
+
+```
+    "hello, dear"
+
+    "hello, \
+
+    dear"
+
+    "hello, " "d" "ear"
+```
+
+### 默认常量
+如下为 C++ 中的两个简单的默认常量。
+
+- \#define：预处理 (如果对预处理不清楚请参考：[C语言中的预处理详解 - 张勤一](http://blog.csdn.net/dlutbrucezhang/article/details/8753765) ，[C语言预处理命令详解- clover_toeic](http://www.cnblogs.com/clover-toeic/p/3851102.html))
+- const：关键字 (const作用可参考：[关于C++ const 的全面总结](http://blog.csdn.net/Eric_Jo/article/details/4138548))
+
+如下是详细的例子：
+
+```
+    #include <iostream>
+    using namespace std;
+
+    #define LENGTH 10   
+    #define WIDTH  5
+    #define NEWLINE '\n'
+
+    int main()
+    {
+
+       int area;  
+
+       area = LENGTH * WIDTH;
+       cout << area;
+       cout << NEWLINE;
+       return 0;
+    }
+```
+
+当上述代码先编译再执行后，会出现如下结果：
+
+```
+    50
+```
+
+const 关键字
+可以使用 **const** 前缀来声明特殊类型的常量，比如：
+
+```
+    const type variable = value;
+```
+
+下面是比较具体的例子：
+
+```
+    #include <iostream>
+    using namespace std;
+
+    int main()
+    {
+       const int  LENGTH = 10;
+       const int  WIDTH  = 5;
+       const char NEWLINE = '\n';
+       int area;  
+
+       area = LENGTH * WIDTH;
+       cout << area;
+       cout << NEWLINE;
+       return 0;
+    }
+```
+
+当上述代码先编译再执行后，会出现如下结果：
+
+```
+    50
+```
+
+> 注意：在程序首部定义常量是一个良好的编程习惯。
+
+
+
+# 修饰符的类型
+
+C++ 允许 **char**、**int** 和 **double** 类型的数据可以在其前面使用修饰符。修饰符用于更改数据变量的意义以实现变量可以更加精准的运用到其所应用的环境中。
+
+数据类型的修饰符如下：
+
+- signed：有符号类型
+- unsigned：无符号类型
+- long：长整型
+- short：短整型
+
+**signed**、**unsigned**、**long** 和 **short** 可以应用到整型基础类型。此外，**signed** 和 **unsigned** 可以应用到 **char** 类型，**long** 可以应用到 **double** 类型。
+
+**signed** 和 **unsigned** 也可以作为 **long** 或 **short** 修饰符的前缀。比如，**unsigned long int**.
+
+C++ 也允许使用简化字符的方式来声明 **unsigned**、**short** 或 **long** 整数。程序员可以仅使用 **unsigned**、**short** 或 **long** 而不使用 int 来定义整型变量。这里的 int 就被简化掉了。比如，下面的两句程序均实现对 **unsigned** 整型变量的声明的功能。
+
+```
+    unsigned x;
+    unsigned int y;
+```
+
+为了理解 C++ 中 **signed** 和 **unsigned** 整数修饰符的不同。可以尝试着运行下面的程序：
+
+```
+    #include <iostream>
+    using namespace std;
+
+    /* This program shows the difference between
+     * signed and unsigned integers.
+    */
+    int main()
+    {
+       short int i;   // a signed short integer
+       short unsigned int j;  // an unsigned short integer
+
+       j = 50000;
+
+       i = j;
+       cout << i << " " << j;
+
+       return 0;
+    }
+```
+
+上述程序执行结果如下：
+
+```
+    -15536 50000
+```
+
+上述结果的背后原因是，unsigned 短整型变量的值为 50000，当是 short 类型时，就是-15536 了。这和值表示范围有关系。
+
+### C++ 中的类型限定符
+类型限定符提供了关于变量保存值更丰富的信息:
+
+|限定符	|意义|
+|-|-|
+|const	|const 类型修饰的对象在起运行周期内不可被改变|
+|volatile	|volatile 修饰符用于提示编译器，程序中某个变量值的改变可能不是程序显式修改的|
+|restrict	|restrict 限定符修饰的指针意味着所有修改该指针所指向内容的操作全部都是基于该指针的。仅在 C99 标准中增加了这个修饰符。|
+
+
