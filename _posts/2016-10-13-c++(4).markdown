@@ -192,10 +192,405 @@ C++ 函数的定义的一般形式如下所示：
     Total value is :120
 ```
 
+# 数字
+
+当我们使用数字时，通常我们使用原始数据类型，例如 int，short，long，float 和 double 等。数字数据类型，它们的可能值和取值范围在讨论 C++ 数据类型时已经解释了。
+
+### 在 C++ 程序中定义数字
+在之前的章节中，我们定义了多种数字类型。下面的例子定义了多种数字类型：
+
+```
+    #include <iostream>
+    using namespace std;
+
+    int main ()
+    {
+       // number definition:
+       short  s;
+       int    i;
+       long   l;
+       float  f;
+       double d;
+
+       // number assignments;
+       s = 10;  
+       i = 1000;
+       l = 1000000; 
+       f = 230.47;  
+       d = 30949.374;
+
+       // number printing;
+       cout << "short  s :" << s << endl;
+       cout << "int    i :" << i << endl;
+       cout << "long   l :" << l << endl;
+       cout << "float  f :" << f << endl;
+       cout << "double d :" << d << endl;
+
+       return 0;
+    }
+```
+
+当上述代码被编译执行时，它将产生下面的结果：
+
+```
+    short  s :10
+    int    i :1000
+    long   l :1000000
+    float  f :230.47
+    double d :30949.4
+```
+
+### C++ 中的数学运算
+除了可以创建各种各样的函数外，**C++** 中还包括一些你可以使用的已经存在的函数。这些函数在标准的 **C** 和 **C++** 库中都可以使用，被称为**内置**函数。这些函数都可以包含在您的程序中，然后使用。
+
+C++ 具有一套丰富的数学运算，可以运用在各种各样的数字上。下表中列出了一些在 C++ 中可以使用的内置数学函数。
+
+要利用这些函数，你需要包括`<cmath>`这个数学头文件。
+
+|序号|	函数和功能|
+|--|-|
+|1	|double cos(double); 这个函数输入一个角度（作为一个双精度）并返回余弦值。|
+|2	|double sin(double); 这个函数输入一个角度（作为一个双精度）并返回正弦值。|
+|3	|double tan(double); 这个函数输入一个角度（作为一个双精度）并返回正切值。|
+|4	|double log(double); 这个函数输入一个数字并返回该数字的自然对数。|
+|5	|double pow(double,double); 第一个参数是你想要增长的数字，第二个参数是你想要将它增长的倍数。|
+|6	|double hypot(double,double); 如果你向该函数传递一个直角三角形的两个边的长度，它将返回你的直角三角形的斜边长度。|
+|7	|double sprt(double); 您向该函数传递一个参数，它将给你这个数字的平方根。|
+|8	|int abs(int); 这个函数返回传递给该函数的整数的绝对值。|
+|9	|double fabs(double); 这个函数返回传递给该函数的任何十进制数的绝对值。|
+|10	|double floor(double); 查找小于或者等于输入参数的整数。|
+
+以下是一个用来说明少数数学运算的简单的示例：
+
+```
+    #include <iostream>
+    #include <cmath>
+    using namespace std;
+
+    int main ()
+    {
+       // number definition:
+       short  s = 10;
+       int    i = -1000;
+       long   l = 100000;
+       float  f = 230.47;
+       double d = 200.374;
+
+       // mathematical operations;
+       cout << "sin(d) :" << sin(d) << endl;
+       cout << "abs(i)  :" << abs(i) << endl;
+       cout << "floor(d) :" << floor(d) << endl;
+       cout << "sqrt(f) :" << sqrt(f) << endl;
+       cout << "pow( d, 2) :" << pow(d, 2) << endl;
+
+       return 0;
+    }
+```
+
+当上述代码被编译执行时，它将产生如下结果：
+
+```
+    sign(d) :-0.634939
+    abs(i)  :1000
+    floor(d) :200
+    sqrt(f) :15.1812
+    pow( d, 2 ) :40149.7
+```
+
+### C++ 中的随机数字
+在很多情况下，您会希望生成一个随机数字。这里有两个你需要知道的随机数字的生成函数。第一个是 **rand()**，这个函数只返回一个伪随机数。要解决这个问题的方式是，首先调用 **srand()** 函数。
+
+以下是一个用来产生几个随机数字的简单例子。这个示例使用 **time()** 函数来获取在您的系统时间中的秒数来随机的生成 **rand()** 函数:
+
+```
+    #include <iostream>
+    #include <ctime>
+    #include <cstdlib>
+
+    using namespace std;
+
+    int main ()
+    {
+       int i,j;
+
+       // set the seed
+       srand( (unsigned)time( NULL ) );
+
+       /* generate 10  random numbers. */
+       for( i = 0; i < 10; i++ )
+       {
+      // generate actual random number
+      		j= rand();
+      		cout <<" Random Number : " << j << endl;
+       }
+
+       return 0;
+    }
+```
+
+当上述代码被编译执行时，它将产生下面的结果：
+
+     Random Number : 1748144778
+     Random Number : 630873888
+     Random Number : 2134540646
+     Random Number : 219404170
+     Random Number : 902129458
+     Random Number : 920445370
+     Random Number : 1319072661
+     Random Number : 257938873
+     Random Number : 1256201101
+     Random Number : 580322989
 
 
+# 数组
 
+C++ 提供了一种数据结构，**数组**，它存储了一个固定大小的相同类型的有序集合的元素。一个数组通常被用来存储大量的数据，但往往将数组看作是一个相同类型的变量的集合。
 
+不是声明单独的变量，例如数字 0，数字 1,...,和数字 99，你可以声明一个数组变量，例如 numbers,并且使用 number[0]，number[1] 和 ...,number[99] 来表示单个变量。数组中的特定元素是通过索引访问的。
+
+所有的数组组成连续的内存位置。最低地址对应于第一个元素，最高地址对应最后一个元素。
+
+### 声明数组
+要在 C++ 中声明一个数组，程序员需要指定元素的类型和一个数组需要的元素的数目，如下所示：
+
+```
+    type arrayName [ arraySize ];
+```
+
+这就是所谓的一维数组。其中 **arraySize** 必须是一个大于零的整数常量，而且 **type** 可以是任何有效的 C++ 数据类型。例如，若要声称一个 double 类型的包含 10 个元素的 balance 数组，需要使用如下语句。
+
+```
+    double balance[10];
+```
+
+### 初始化数组
+你可以一个接着一个或者是使用一个单独的语句来初始化一个 C++ 数组，如下所示：
+
+```
+    double balance[5] = {1000.0, 2.0, 3.4, 17.0, 50.0};
+```
+
+大括号 { } 之间的值的大小不能比我们为数组声明时的方括号 [ ] 中的数目大。以下是一个指定数组单个元素的例子。
+
+如果你省略了数组的大小，我们将创建一个足够容纳初始化的一个数组。如下代码：
+
+```
+    double balance[] = {1000.0, 2.0, 3.4, 17.0, 50.0};
+```
+
+就像之前的示例一样，你将创建一个完全相同的数组。
+
+```
+    balance[4] = 50.0;
+```
+
+上面的语句将数组中的第五个元素定义为 50.0，第四个数组索引即第五个元素，即最后一个元素，因为所有的数组都使用 0 作为它们第一个元素的索引，称为基索引，下面是我们之前讨论的同一个数组的图案表示：
+
+![](http://wiki.jikexueyuan.com/project/cplusplus/images/array_presentation.jpg)
+
+### 访问数组元素
+一个元素通过索引数组名称被访问。这是通过将元素的索引放置在数组名字后面的方括号中来完成的，举例：
+
+```
+    double salary = balance[9];
+```
+
+上面的语句将第 10 个元素从数组中取出来，并将该值赋给 salary 变量。以下是一个例子，即使用所有上述提到的三个概念，即声明，初始化和访问数组：
+
+```
+    #include <iostream>
+    using namespace std;
+
+    #include <iomanip>
+    using std::setw;
+
+    int main ()
+    {
+       int n[ 10 ]; // n is an array of 10 integers
+
+       // initialize elements of array n to 0  
+       for ( int i = 0; i < 10; i++ )
+       {
+            n[ i ] = i + 100; // set element at location i to i + 100
+       }
+       cout << "Element" << setw( 13 ) << "Value" << endl;
+
+       // output each array element's value  
+       for ( int j = 0; j < 10; j++ )
+       {
+            cout << setw( 7 )<< j << setw( 13 ) << n[ j ] << endl;
+       }
+
+       return 0;
+    }
+```
+
+这个程序使用 **setw()** 函数来格式化输出。当上述代码编译执行时，它将生成以下结果：
+
+```
+    ElementValue
+      0  100
+      1  101
+      2  102
+      3  103
+      4  104
+      5  105
+      6  106
+      7  107
+      8  108
+      9  109
+```
+
+### 详细的 C++ 数组
+数组对 C++ 非常重要,而且应该需要大量的详细信息。这里有以下几个 C++ 程序员应该清楚的重要的概念。
+
+|概念	|描述|
+|-|-|
+|多维数组|	C++ 支持多维数组。多维数组最简单的形式是二维数组。|
+|指向数组的指针	|你可以通过简单的指定数组的名字来生成这个数组的第一个元素的指针，并不需要任何索引的。|
+|将数组传递给函数|	你可以不使用索引直接通过指定数组的名字将一个指向数组的指针传递给函数。|
+|从函数中返回数组	|C++ 允许函数返回一个数组。|
+
+# 字符串
+
+C++ 提供了以下两种类型的字符串表示形式：
+
+- C 样式字符串
+- 用标准 C++ 介绍的标准字符串类型
+
+## C 样式字符串
+C 样式字符串源于 C 语言，在 C++ 中仍然被支持。这个串实际是一个字符的一维数组，这个数组以一个空字符 ‘\0’ 结束。因此以 null 结尾的字符串包含由字符组成的字符串，此字符串后跟着一个 **null**。
+
+接下来声明和初始化创建一个字符串，这个字符串组成一个单词 "hello"。为了包含数组末尾的空字符，包含该字符串的字符数组的大小应该比单词 "hello" 中的字符的数目多一个。
+
+```
+    char greeting[6] = {'H', 'e', 'l', 'l', 'o', '\0'};
+```
+
+如果你遵循数组初始化的规则，你可以像下面一样书写上面的语句：
+
+```
+    char greeting[] = "Hello";
+```
+
+以下是在 C/C++ 中定义上面的字符串的内存演示：
+
+![](http://wiki.jikexueyuan.com/project/cplusplus/images/string_representation.jpg)
+
+实际上，你不需要在字符串常量的末尾放置一个空字符。 C++ 编译器在初始化数组时自动在串的末尾放置一个 '\0'。让我们尝试打印上述字符串：
+
+```
+    #include <iostream>
+
+    using namespace std;
+
+    int main ()
+    {
+       char greeting[6] = {'H', 'e', 'l', 'l', 'o', '\0'};
+
+       cout << "Greeting message: ";
+       cout << greeting << endl;
+
+       return 0;
+    }
+```
+当上述代码被编译执行时，它将产生如下结果：
+
+```
+    Greeting message: Hello
+```
+
+C++ 支持广泛的函数来操作以空字符终止的字符串：
+
+|SN	|函数和功能|
+|-|-|
+|1	|strcpy(s1,s2); 将字符串 s2 复制到字符串 s1 中。|
+|2	|strcat(s1,s2); 将字符串 s2 串联到字符串 s1 的结尾。|
+|3	|strlen(s1); 返回字符串 s1 的长度。|
+|4	|strcmp(s1,s2); 如果 s1 和 s2 相同，返回 0；如果 s1≥s2，返回大于 0 的数；如果 s1
+|5|	strchr(s1,ch); 返回在字符串 s1 中指向第一次出现字符 ch 的指针。|
+|6	|strstr(s1,s2); 返回在字符串 s1 中指向第一次出现字符串 s2 的指针。|
+
+以下是应用了一些上述函数的示例：
+
+```
+    #include <iostream>
+    #include <cstring>
+
+    using namespace std;
+
+    int main ()
+    {
+       char str1[10] = "Hello";
+       char str2[10] = "World";
+       char str3[10];
+       int  len ;
+
+       // copy str1 into str3
+       strcpy( str3, str1);
+       cout << "strcpy( str3, str1) : " << str3 << endl;
+
+       // concatenates str1 and str2
+       strcat( str1, str2);
+       cout << "strcat( str1, str2): " << str1 << endl;
+
+       // total lenghth of str1 after concatenation
+       len = strlen(str1);
+       cout << "strlen(str1) : " << len << endl;
+
+       return 0;
+    }
+```
+
+当上述代码被编译执行时，它将产生如下结果：
+
+```
+    strcpy( str3, str1) : Hello
+    strcat( str1, str2): HelloWorld
+    strlen(str1) : 10
+```
+
+### C++ 中的字符串类
+标准的 C++ 库中提供了一个 **string** 类，它支持上面提到的所有的操作，另外它还有更多的功能。我们会研究 C++ 标准库中的这个类，但现在我们先检查以下示例：
+
+在这点上，你可能还没有明白这个例子，因为到目前为止我们还没有讨论类和对象。所以直到你理解了面向对象的概念你才可以继续进行下去。
+
+```
+    #include <iostream>
+    #include <string>
+
+    using namespace std;
+
+    int main ()
+    {
+       string str1 = "Hello";
+       string str2 = "World";
+       string str3;
+       int  len ;
+
+       // copy str1 into str3
+       str3 = str1;
+       cout << "str3 : " << str3 << endl;
+
+       // concatenates str1 and str2
+       str3 = str1 + str2;
+       cout << "str1 + str2 : " << str3 << endl;
+
+       // total lenghth of str3 after concatenation
+       len = str3.size();
+       cout << "str3.size() :  " << len << endl;
+
+       return 0;
+    }
+```
+
+当上述代码被编译执行时，它将产生如下结果：
+
+```
+    str3 : Hello
+    str1 + str2 : HelloWorld
+    str3.size() :  10
+```
 
 
 

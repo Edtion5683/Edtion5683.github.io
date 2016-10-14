@@ -1,0 +1,722 @@
+---
+layout:     post
+title:      "C++基础(五)"
+subtitle:   " \"Hello World, Hello C++\""
+date:       2016-10-13 12:00:00
+author:     "Edtion"
+catalog: true
+tags:
+    - C++语法
+---
+
+> 转自：[极客学院C++基础教程][1] 修改部分汉语逻辑（极客学院能翻译成中文并免费开放已经做的很棒了，不要要求太多）
+
+# 指针
+
+C++ 指针学起来非常容易和有趣。一些 C++ 的任务用指针执行非常容易，诸如动态分配内存的 C++ 工作，如果没有指针将无法执行。
+
+如你所知，每个变量有一个内存位置，每个内存位置都有它的地址定义，这个地址定义可以使用表示内存中地址的和运算符 (&) 进行访问。下面我们将打印定义的变量的地址：
+
+```
+    #include <iostream>
+
+    using namespace std;
+
+    int main ()
+    {
+       int  var1;
+       char var2[10];
+
+       cout << "Address of var1 variable: ";
+       cout << &var1 << endl;
+
+       cout << "Address of var2 variable: ";
+       cout << &var2 << endl;
+
+       return 0;
+    }
+```
+
+当上述代码被编译执行时，它将产生如下结果:
+
+```
+    Address of var1 variable: 0xbfebd5c0
+    Address of var2 variable: 0xbfebd5b6
+```
+
+### 指针是什么？
+**指针**是一个变量，它的值是另一个变量的地址。像任何变量或常量一样，你必须在使用它之前声明一个指针。
+
+指针变量声明的一般形式为：
+
+```
+    type *var-name;
+```
+
+在这里，**type** 是指针的基类型；它必须是一个有效的 C++ 类型，**var-name** 是指针变量的名称。用来声明一个指针的星号与你用于乘法的星号是一样的。然而，在这个语句中，这个星号用来指定一个变量作为一个指针。以下是有效的指针声明：
+
+```
+    int    *ip;// pointer to an integer
+    double *dp;// pointer to a double
+    float  *fp;// pointer to a float
+    char   *ch;// pointer to character
+```
+
+所有指针的值的实际的数据类型，或者是整数，浮点数，字符或者是其他，同样的一个长十六进制数表示一个内存地址。不同的数据类型的指针之间的唯一区别在于指针指向的变量或常量的数据类型。
+
+### 在 C++ 中使用指针
+这里有几个我们将非常频繁的使用指针的重要的操作。
+
+**(a)** 我们定义一个指针变量；
+
+**(b)** 将一个变量的地址分配给指针；
+
+**(c)** 最后使用在指针变量中的地址来访问这个值。
+
+这是通过使用一元运算符 * 完成的，返回位于通过运算符指定地址的变量的值。以下示例使用这些操作：
+
+```
+    #include <iostream>
+
+    using namespace std;
+
+    int main ()
+    {
+       int  var = 20;   // actual variable declaration.
+       int  *ip;// pointer variable 
+
+       ip = &var;   // store address of var in pointer variable
+
+       cout << "Value of var variable: ";
+       cout << var << endl;
+
+       // print the address stored in ip pointer variable
+       cout << "Address stored in ip variable: ";
+       cout << ip << endl;
+
+       // access the value at the address available in pointer
+       cout << "Value of *ip variable: ";
+       cout << *ip << endl;
+
+       return 0;
+    }
+```
+
+当上述代码被编译执行时，它将产生如下结果：
+
+```
+    Value of var variable: 20
+    Address stored in ip variable: 0xbfc601ac
+    Value of *ip variable: 20
+```
+
+### 详细的 C++ 指针
+指针有很多但是很容易的概念，它们对 C++ 的编程非常重要。这里有一些 C++ 程序员应该必须清楚的重要的指针概念：
+
+|概念	|描述|
+|-|-|
+|C++ 空指针|	C++ 支持空指针，它是在几个标准库中被定义值为零的一个常量。|
+|C++ 指针算法|	这里有四种可用于指针的算术运算符：++,--,+,-|
+|C++ 指针与数组	|指针与数组之间有着密切的关系。让我们看一看？|
+|C++ 指针数组	|你可以定义保存大量指针的数组。|
+|C++ 指针的指针	|C++ 允许您有指针的指针，等等。|
+|将指针传递给函数	|通过引用或通过地址传递参数，两种方法都可以使被调用的函数在调用函数中传递的参数发生更改。|
+|从函数返回指针|	C++ 允许函数返回一个指向本地变量的指针，同样也允许返回指向静态变量和动态分配内存的指针。|
+
+# 引用
+
+引用变量是一个别名，即已经存在的变量的另一个名称（引用就是某一个变量的别名）。一旦用一个变量初始化引用，变量名称和引用名称都可以用来指示变量。
+
+### C++ 引用 VS 指针
+引用与指针非常容易混淆，但引用和指针有三个主要区别：
+
+- 空引用不可能存在。你必须始终能够假定一个引用被连接到一个合法的存储块。
+- 一旦一个引用被初始化为一个对象，它就不能改变去指示另一个对象。指针可以随时改变指向另一个不同的对象。
+- 引用必须在它被创建时就初始化。指针可以在任何时候初始化。
+
+### 在 c++ 中创建引用
+考虑到一个变量名是一个附加到该变量在内存中的位置的标签。你可以认为一个引用是附加到该内存位置的第二个标签。因此,您可以通过原始变量名或引用来访问变量的内容。例如，我们假设有下面的例子：
+
+```
+    int i = 17;   
+```
+
+我们可以为 i 声明引用变量，如下所示。
+
+```
+    int& r = i;
+```
+
+在这些声明中将 & 理解为引用（**reference**）。因此，第一个声明理解为 “ r 是一个整数引用，初始化为 i ” 和第二声明理解为 “ s 是一个双引用，初始化为 d ”。下面的例子使用了 int 和 double 引用：
+
+```
+    #include <iostream>
+
+    using namespace std;
+
+    int main ()
+    {
+       // declare simple variables
+       int    i;
+       double d;
+
+       // declare reference variables
+       int& r = i;
+       double& s = d;
+
+       i = 5;
+       cout << "Value of i : " << i << endl;
+       cout << "Value of i reference : " << r  << endl;
+
+       d = 11.7;
+       cout << "Value of d : " << d << endl;
+       cout << "Value of d reference : " << s  << endl;
+
+       return 0;
+    }
+```
+
+将上面的代码放在一起编译、执行，执行结果如下 ：
+
+```
+    Value of i : 5
+    Value of i reference : 5
+    Value of d : 11.7
+    Value of d reference : 11.7
+```
+
+引用通常用于函数参数列表和函数返回值。以下是与 c++ 引用有关的两个重要的方面，一个 c++ 程序员应该明确了解：
+
+|内容|	描述|
+|-|-|
+|引用作为参数|	c++ 支持引用作为函数参数传递，它比直接传递参数更安全。|
+|引用作为返回值	|可以从一个 c++ 函数返回引用，就像返回任何其他数据类型。|
+
+
+# 日期和时间
+
+C++ 标准库没有提供一个合适的日期类型。C++ 从 C 中继承了针对日期和时间的结构和功能，为了访问与日期和时间相关的功能和结构，需要在 C++ 程序中包括 **<ctime>** 头文件。
+
+这里有四个与时间相关的类型：**clock_t**、**time_t**、**size_t** 和 **tm**。clock_t，size_t 和 time_t 类型能够以某种类型的整数表示系统时间和日期。
+
+结构类型 **tm** 以 C 结构体的形式支持日期和时间，有以下元素:
+
+```
+    struct tm {
+      int tm_sec;   // seconds of minutes from 0 to 61
+      int tm_min;   // minutes of hour from 0 to 59
+      int tm_hour;  // hours of day from 0 to 24
+      int tm_mday;  // day of month from 1 to 31
+      int tm_mon;   // month of year from 0 to 11
+      int tm_year;  // year since 1900
+      int tm_wday;  // days since sunday
+      int tm_yday;  // days since January 1st
+      int tm_isdst; // hours of daylight savings time
+    }
+```
+
+以下是我们在 C 或 C++ 中处理日期和时间时使用的一些重要的函数。所有这些函数都是标准 C 和 C++ 库的一部分，你可以使用下面给出的 C++ 标准库引用查看它们的使用细节。
+
+|序号	|功能与目的|
+|-|-|
+|1	|**time_t time(time_t \*time);**这将返回当前系统的日历时间，以自 1970 年 1 月 1 日开始系统运行秒数的形式。如果系统没有时间，返回 1。|
+|2	|**char \*ctime(const time_t \*time);**这返回一个指向字符串的指针，字符串形式为 day month year hours:minutes:seconds year\n\0。|
+|3	|**struct tm \*localtime(const time_t \*time);**这将返回一个指向 tm 结构体的指针，tm 结构体代表当地时间。|
+|4	|**clock_t clock(void);**这将返回一个与被调用程序运行时间的总和接近的值。如果时间无效，返回 1。|
+|5	|**char \* asctime ( const struct tm \* time );**这将返回一个指向字符串的指针，该字符串包含的信息以如下结构体存储，结构体形式如下:day month year hours:minutes:seconds year\n\0|
+|6	|**struct tm \*gmtime(const time_t \*time);**它返回一个指向时间的指针，该时间是 tm 结构的。时间用协调世界时(UTC)表示，在本质上是格林威治标准时间(GMT)。|
+|7	|**time_t mktime(struct tm \*time);**返回日历时间，时间以参数中指出的结构形式表示。|
+|8	|**double difftime ( time_t time2, time_t time1 );**这个函数计算秒 time1 和 time2 之间的差异。|
+|9	|**size_t strftime();**这个函数可以用于以一种特定格式来格式化日期和时间。|
+
+### 当前的日期和时间
+考虑你想要取得当前系统的日期和时间，作为当地时间或作为一个协调世界时（UTC）。下面是一个实现相同目的的示例：
+
+```
+    #include <iostream>
+    #include <ctime>
+
+    using namespace std;
+
+    int main( )
+    {
+       // current date/time based on current system
+       time_t now = time(0);
+
+       // convert now to string form
+       char* dt = ctime(&now);
+
+       cout << "The local date and time is: " << dt << endl;
+
+       // convert now to tm struct for UTC
+       tm *gmtm = gmtime(&now);
+       dt = asctime(gmtm);
+       cout << "The UTC date and time is:"<< dt << endl;
+    }
+```
+
+编译和执行上面的代码，执行结果如下：
+
+```
+    The local date and time is: Sat Jan  8 20:07:41 2011
+
+    The UTC date and time is:Sun Jan  9 03:07:41 2011
+```
+
+### 使用结构体 tm 格式化时间：
+无论是在 C 还是在 C++ 中，**tm** 结构体在处理日期和时间时都是非常重要的。如前所述，该结构以一种 C 语言结构体的形式支持日期和时间。大部分与时间相关的函数使用 tm 结构。下面是一个例子，它使用了各种各样日期和时间的相关函数和 tm 结构：
+
+在本章中使用结构体，基于一个假设：你已经对 C 语言的结构体有了基本的了解，并且知道如何使用箭头操作符：-> 访问结构体成员。
+
+```
+    #include <iostream>
+    #include <ctime>
+
+    using namespace std;
+
+    int main( )
+    {
+       // current date/time based on current system
+       time_t now = time(0);
+
+       cout << "Number of sec since January 1,1970:" << now << endl;
+
+       tm *ltm = localtime(&now);
+
+       // print various components of tm structure.
+       cout << "Year: "<< 1900 + ltm->tm_year << endl;
+       cout << "Month: "<< 1 + ltm->tm_mon<< endl;
+       cout << "Day: "<<  ltm->tm_mday << endl;
+       cout << "Time: "<< 1 + ltm->tm_hour << ":";
+       cout << 1 + ltm->tm_min << ":";
+       cout << 1 + ltm->tm_sec << endl;
+    }
+```
+
+编译和执行上面的代码，执行结果如下：
+
+```
+    Number of sec since January 1, 1970:1294548238
+    Year: 2011
+    Month: 1
+    Day: 8
+    Time: 22: 44:59
+```
+
+# 基本输入输出
+
+C++ 标准库提供了一组广泛的的输入/输出功能，我们将在随后的章节中展开。本章将讨论 C++ 编程所需的最基本和最常见的 I/O 操作。
+
+C++ I/O发生在流中，流是一种字节序列。如果字节流从一个设备（如键盘、磁盘驱动器,或网络连接等）到主内存，这称为输入操作（**input operation**）。如果字节从主内存流向一个设备（如显示屏，打印机，磁盘驱动器，或网络连接等），这就是所谓的输出操作（**output operation**）。
+
+### I/O 库头文件
+下边列出对于 C++ 程序重要的头文件：
+
+|头文件|	功能和描述|
+|-|-|
+|<iostream>	|这个头文件定义了 **cin**、**cout**、**cerr** 和 **clog** 对象，它们分别对应于标准输入流，标准输出流，无缓冲标准错误流和有缓冲标准错误流。|
+|<iomanip>|	这个头文件声明了用于执行格式化 I/O 操作的一系列服务，即所谓的参数化流操作，如 **setw** 和 **setprecision**。|
+|<fstream>	|这个头文件声明了基于用户控制的文件处理服务。我们将在文件和流相关的章节更详细讨论关于它的内容。|
+
+### 标准输出流
+预定义的对象 **cout** 是 **ostream** 类的一个实例。cout 对象通常连接到标准输出设备，一般是显示屏。cout 和流插入运算符联合使用，流插入运算符写为 `<<`，即两个表示小于的符号，如以下示例所示。
+
+```
+    #include <iostream>
+
+    using namespace std;
+
+    int main( )
+    {
+       char str[] = "Hello C++";
+
+       cout << "Value of str is : " << str << endl;
+    }
+```
+
+编译和执行上面的代码，运行结果如下：
+
+```
+    Value of str is : Hello C++
+```
+
+C++ 编译器也决定了输出的变量数据类型并选择适当的流插入运算符来显示值。<< 操作符重载了多种输出数据项（包括各种内置类型：整数、浮点数、双精度浮点数、字符串和指针类型的值）。
+
+插入运算符<<在一个语句中可能不止一次被使用，如上所示，endl 写在结束的时候用于添加一个新行。
+
+### 标准输入流
+预定义对象 **cin** 是 **istream** 类的一个实例。cin 对象通常用于标准输入设备，一般是键盘。cin 和流提取运算符联合使用，流提取符号写为 `>>` 即两个表示大于的符号，如以下示例所示。
+
+```
+    #include <iostream>
+
+    using namespace std;
+
+    int main( )
+    {
+       char name[50];
+
+       cout << "Please enter your name: ";
+       cin >> name;
+       cout << "Your name is: " << name << endl;
+
+    }
+```
+
+编译和执行上面的代码，它会提示输入一个名称。输入一个值，然后回车，运行结果如下：
+
+```
+    Please enter your name: cplusplus
+    Your name is: cplusplus
+```
+
+C++ 编译器也决定输入值的数据类型和选择适当的流提取运算符提取值并将其存储在给定的变量。
+
+流提取操作符>>可以在一个声明中不止一次使用。请求多个数据时，可采用以下书写形式：
+
+```
+    cin >> name >> age;
+```
+
+上述表达式等价于下面两个声明语句：
+
+```
+    cin >> name;
+    cin >> age;
+```
+
+### 标准错误流
+预定义对象 **cerr** 是 **ostream** 类的一个实例。cerr 对象通常附加到标准错误设备，这一般也是一个显示屏，但对象 cerr 是无缓存的，每当有流插入到 cerr 会导致其输出立即出现。
+
+cerr 也与流插入操作符一起使用，如以下示例所示。
+
+```
+    #include <iostream>
+
+    using namespace std;
+
+    int main( )
+    {
+       char str[] = "Unable to read....";
+
+       cerr << "Error message : " << str << endl;
+    }
+```
+
+编译和执行上面的代码，运行结果如下：
+
+```
+    Error message : Unable to read....
+```
+
+### 标准日志流
+预定义对象 **clog** 是 **ostream** 类的一个实例。clog 对象通常附加到标准错误设备，这一般也是一个显示屏，但对象 clog 是有缓冲的。这意味着每个插入的 clog 会暂存在缓冲区中，直到缓冲区满或者缓冲区刷新才会产生一次输出。
+
+clog 也与流插入操作符一起使用，如以下示例所示。
+
+```
+    #include <iostream>
+
+    using namespace std;
+
+    int main( )
+    {
+       char str[] = "Unable to read....";
+
+       clog << "Error message : " << str << endl;
+    }
+```
+
+编译和执行上面的代码，运行结果如下：
+
+```
+    Error message : Unable to read....
+```
+
+在这些小例子中，你可能无法看出 cout,cerr,clog 的区别，但在编写、执行大项目时，差异就变得显而易见了。所以这是很好的应用实践：使用 cerr 流显示错误消息，而使用 clog 显示其他日志信息。
+
+# 结构体
+
+C/C++ 结构体(struct)是由一系列具有相同类型或不同类型的数据构成的数据集合，叫做结构，但结构体（**structure**）是一种用户定义的数据类型，允许你将不同类型的数据项放在一起。
+
+结构用来表示一条记录。假设你想在图书馆中找一本书，您可能需要查找每本书的以下属性：
+
+- Title
+- Author
+- Subject
+- Book ID
+
+### 定义一个结构体
+定义一个结构体，您必须使用结构体声明。结构体语句为您的程序定义了一个新的数据类型，拥有一个以上的成员。
+
+结构体声明的格式是这样的:
+
+```
+    struct [structure tag]
+    {
+       member definition;
+       member definition;
+       ...
+       member definition;
+    } [one or more structure variables];  
+```
+
+**structure tag** 是可选的，每个成员的定义都是一个正常的变量定义，如 int i；或者 float f；或者任何其他有效的变量定义。在结构的定义结束时，在结构体定义结尾处的（“；”）符号之前可以指定一个或多个结构变量，但它是可选的。这是声明书结构体的方式:
+
+```
+    struct Books
+    {
+       char  title[50];
+       char  author[50];
+       char  subject[100];
+       int   book_id;
+    }book;  
+```
+
+### 访问结构体成员
+访问一个结构体的任何成员，我们使用 **member access operator**（成员访问操作符）：**(.)** 来访问结构体成员。成员访问操作符编码为结构变量名和我们要访问结构成员之间的一个点符号。使用关键字 **struct** 来定义结构类型的变量。下面是例子解释怎样使用结构体：
+
+```
+    #include <iostream>
+    #include <cstring>
+
+    using namespace std;
+
+    struct Books
+    {
+       char  title[50];
+       char  author[50];
+       char  subject[100];
+       int   book_id;
+    };
+
+    int main( )
+    {
+       struct Books Book1;// Declare Book1 of type Book
+       struct Books Book2;// Declare Book2 of type Book
+
+       // book 1 specification
+       strcpy( Book1.title, "Learn C++ Programming");
+       strcpy( Book1.author, "Chand Miyan"); 
+       strcpy( Book1.subject, "C++ Programming");
+       Book1.book_id = 6495407;
+
+       // book 2 specification
+       strcpy( Book2.title, "Telecom Billing");
+       strcpy( Book2.author, "Yakit Singha");
+       strcpy( Book2.subject, "Telecom");
+       Book2.book_id = 6495700;
+
+       // Print Book1 info
+       cout << "Book 1 title : " << Book1.title <<endl;
+       cout << "Book 1 author : " << Book1.author <<endl;
+       cout << "Book 1 subject : " << Book1.subject <<endl;
+       cout << "Book 1 id : " << Book1.book_id <<endl;
+
+       // Print Book2 info
+       cout << "Book 2 title : " << Book2.title <<endl;
+       cout << "Book 2 author : " << Book2.author <<endl;
+       cout << "Book 2 subject : " << Book2.subject <<endl;
+       cout << "Book 2 id : " << Book2.book_id <<endl;
+
+       return 0;
+    }
+```
+
+编译和执行上面的代码，执行结果如下：
+
+```
+    Book 1 title : Learn C++ Programming
+    Book 1 author : Chand Miyan
+    Book 1 subject : C++ Programming
+    Book 1 id : 6495407
+    Book 2 title : Telecom Billing
+    Book 2 author : Yakit Singha
+    Book 2 subject : Telecom
+    Book 2 id : 6495700
+```
+
+### 结构体作为函数参数
+你可以将结构体作为函数参数传递，其使用方式和将其他任何变量或指针作为参数传递非常相似。你可以以同样的方式访问结构变量，就如在上面的例子中显示的一样：
+
+```
+    #include <iostream>
+    #include <cstring>
+
+    using namespace std;
+    void printBook( struct Books book );
+
+    struct Books
+    {
+       char  title[50];
+       char  author[50];
+       char  subject[100];
+       int   book_id;
+    };
+
+    int main( )
+    {
+       struct Books Book1;// Declare Book1 of type Book
+       struct Books Book2;// Declare Book2 of type Book
+
+       // book 1 specification
+       strcpy( Book1.title, "Learn C++ Programming");
+       strcpy( Book1.author, "Chand Miyan"); 
+       strcpy( Book1.subject, "C++ Programming");
+       Book1.book_id = 6495407;
+
+       // book 2 specification
+       strcpy( Book2.title, "Telecom Billing");
+       strcpy( Book2.author, "Yakit Singha");
+       strcpy( Book2.subject, "Telecom");
+       Book2.book_id = 6495700;
+
+       // Print Book1 info
+       printBook( Book1 );
+
+       // Print Book2 info
+       printBook( Book2 );
+
+       return 0;
+    }
+    void printBook( struct Books book )
+    {
+       cout << "Book title : " << book.title <<endl;
+       cout << "Book author : " << book.author <<endl;
+       cout << "Book subject : " << book.subject <<endl;
+       cout << "Book id : " << book.book_id <<endl;
+    }
+```
+
+编译和执行上面的代码，执行结果如下：
+
+```
+    Book title : Learn C++ Programming
+    Book author : Chand Miyan
+    Book subject : C++ Programming
+    Book id : 6495407
+    Book title : Telecom Billing
+    Book author : Yakit Singha
+    Book subject : Telecom
+    Book id : 6495700
+```
+
+### 结构体指针
+您可以定义结构体指针，以一种定义指向其他变量的指针非常相似的方式，如下所示：
+
+```
+    struct Books *struct_pointer;
+```
+
+现在，您可以用上面定义的指针变量存储一个结构变量的地址。找到一个结构变量的地址，把操作符 & 置于结构体名称的前面，如下所示：
+
+```
+    struct_pointer = &Book1;
+```
+
+为了通过一个指向结构的指针访问结构体成员，必须使用 -> 操作符，如下所示：
+
+```
+    struct_pointer->title;
+```
+
+让我们使用结构指针重写上面的例子，希望这将帮助你更容易理解这个概念：
+
+```
+    #include <iostream>
+    #include <cstring>
+
+    using namespace std;
+    void printBook( struct Books *book );
+
+    struct Books
+    {
+       char  title[50];
+       char  author[50];
+       char  subject[100];
+       int   book_id;
+    };
+
+    int main( )
+    {
+       struct Books Book1;// Declare Book1 of type Book
+       struct Books Book2;// Declare Book2 of type Book
+
+       // Book 1 specification
+       strcpy( Book1.title, "Learn C++ Programming");
+       strcpy( Book1.author, "Chand Miyan"); 
+       strcpy( Book1.subject, "C++ Programming");
+       Book1.book_id = 6495407;
+
+       // Book 2 specification
+       strcpy( Book2.title, "Telecom Billing");
+       strcpy( Book2.author, "Yakit Singha");
+       strcpy( Book2.subject, "Telecom");
+       Book2.book_id = 6495700;
+
+       // Print Book1 info, passing address of structure
+       printBook( &Book1 );
+
+       // Print Book1 info, passing address of structure
+       printBook( &Book2 );
+
+       return 0;
+    }
+    // This function accept pointer to structure as parameter.
+    void printBook( struct Books *book )
+    {
+       cout << "Book title : " << book->title <<endl;
+       cout << "Book author : " << book->author <<endl;
+       cout << "Book subject : " << book->subject <<endl;
+       cout << "Book id : " << book->book_id <<endl;
+    }
+```
+
+编译和执行上面的代码，执行结果如下：
+
+```
+    Book title : Learn C++ Programming
+    Book author : Chand Miyan
+    Book subject : C++ Programming
+    Book id : 6495407
+    Book title : Telecom Billing
+    Book author : Yakit Singha
+    Book subject : Telecom
+    Book id : 6495700
+```
+
+###typedef 关键字
+有一个更简单的方法来定义结构体，你可以给你创建的类型起一个别名，例如：
+
+```
+    typedef struct
+    {
+       char  title[50];
+       char  author[50];
+       char  subject[100];
+       int   book_id;
+    }Books;
+```
+
+现在，可以直接使用 Books 来定义书籍类型的变量，而不使用 struct 关键字。下面是示例：
+
+```
+    Books Book1, Book2;
+```
+
+你也可以在非结构体（non-structs）中使用 typedef 关键字，如下所示：
+
+```
+    typedef long int *pint32;
+
+    pint32 x, y, z;
+```
+
+x,y,z 是指向长整数类型的指针。
+
+
+
+
+
+
+
