@@ -2,7 +2,7 @@
 layout:     post
 title:      "C++面向对象"
 subtitle:   " \"Hello World, Hello C++\""
-date:       2016-10-16 12:00:00
+date:       2016-10-20 12:00:00
 author:     "Edtion"
 catalog: true
 tags:
@@ -11,6 +11,7 @@ tags:
 
 > 转自：[极客学院C++基础教程][1] 修改部分汉语逻辑（极客学院能翻译成中文并免费开放已经做的很棒了，不要要求太多）
 
+>这篇较长，主要讲C++的面向对象思想，耗时一周学习并移植到这里，写在一篇里方便整体理解
 
 # 类和对象
 
@@ -284,12 +285,616 @@ Box1 和 Box2 对象都分别持有其各自的数据副本。
     Total paint cost: $2450
 ```
 
+# 重载
+
+C++ 允许在同一范围内对一个函数名或一个操作符指定多个定义，分别被称为函数重载和操作符重载。
+
+重载声明是在同一的范围内对先前已经声明的相同函数名的声明，除非这两个声明有不同的参数和明显不同的定义（实现方式）。
+
+当你调用一个重载的函数或操作符时，编译器通过比较用来调用函数或操作符的指定的参数类型来确定使用最合适的定义。选择最合适的重载函数或操作符的过程被称为重载决议。
+
+### C++ 中的函数重载
+你可以在同一范围内对同一函数名有多个定义。函数的定义必须满足参数类型不同或参数的数量不同或两者都不相同。你不能重载只有返回类型不同的函数声明。
+
+下面是一个相同的函数 print() 函数被用来打印不同的数据类型的例子：
+
+```
+    #include <iostream>
+    using namespace std;
+
+    class printData 
+    {
+       public:
+      void print(int i) {
+    		cout << "Printing int: " << i << endl;
+      }
+
+      void print(double  f) {
+    		cout << "Printing float: " << f << endl;
+      }
+
+      void print(char* c) {
+    		cout << "Printing character: " << c << endl;
+      }
+    };
+
+    int main(void)
+    {
+       printData pd;
+
+       // Call print to print integer
+       pd.print(5);
+       // Call print to print float
+       pd.print(500.263);
+       // Call print to print character
+       pd.print("Hello C++");
+
+       return 0;
+    }
+```
+
+上面的代码编译和执行时，它产生以下结果：
+
+    Printing int: 5
+    Printing float: 500.263
+    Printing character: Hello C++
+
+### C++ 中的运算符重载　
+
+你可以重新定义或重载的大部分 C++ 已有的操作符。因此，程序员可以像使用用户自定义类型一样使用操作符。　
+
+重载操作符是一类函数，它们就是对已有的运算符重新进行定义，赋予其另一种功能，以适应不同的数据类型。像任何其它函数,重载运算符也有返回类型和参数列表。
+
+```
+    Box operator+(const Box&);
+```
+
+声明加法运算符可以用来使两个 Box 对象相加并返回最终 Box 对象。大多数重载运算符可以被定义为普通非成员函数或类成员函数。如果我们把上面的函数定义为一个类的非成员函数,那么我们就必须为每个操作数传两个参数如下：
+
+```
+    Box operator+(const Box&, const Box&);
+```
+
+下面是通过使用成员函数来展示运算符重载的概念的示例。这里一个对象作为一个参数被传递，通过访问这个对象可以获得参数的属性，将调用这个操作符的对象可以通过使用 this 操作符获得，下面这个例子展示了这一点：
+
+```
+    #include <iostream>
+    using namespace std;
+
+    class Box
+    {
+       public:
+
+      double getVolume(void)
+      {
+     		return length * breadth * height;
+      }
+      void setLength( double len )
+      {
+      		length = len;
+      }
+
+      void setBreadth( double bre )
+      {
+      		breadth = bre;
+      }
+
+      void setHeight( double hei )
+      {
+      		height = hei;
+      }
+      // Overload + operator to add two Box objects.
+      Box operator+(const Box& b)
+      {
+     		Box box;
+     		box.length = this->length + b.length;
+     		box.breadth = this->breadth + b.breadth;
+     		box.height = this->height + b.height;
+     		return box;
+      }
+       private:
+      double length;  // Length of a box
+      double breadth; // Breadth of a box
+      double height;  // Height of a box
+    };
+    // Main function for the program
+    int main( )
+    {
+       Box Box1;// Declare Box1 of type Box
+       Box Box2;// Declare Box2 of type Box
+       Box Box3;// Declare Box3 of type Box
+       double volume = 0.0; // Store the volume of a box here
+
+       // box 1 specification
+       Box1.setLength(6.0); 
+       Box1.setBreadth(7.0); 
+       Box1.setHeight(5.0);
+
+       // box 2 specification
+       Box2.setLength(12.0); 
+       Box2.setBreadth(13.0); 
+       Box2.setHeight(10.0);
+
+       // volume of box 1
+       volume = Box1.getVolume();
+       cout << "Volume of Box1 : " << volume <<endl;
+
+       // volume of box 2
+       volume = Box2.getVolume();
+       cout << "Volume of Box2 : " << volume <<endl;
+
+       // Add two object as follows:
+       Box3 = Box1 + Box2;
+
+       // volume of box 3
+       volume = Box3.getVolume();
+       cout << "Volume of Box3 : " << volume <<endl;
+
+       return 0;
+    }
+```
+
+上面的代码编译和执行时，它产生以下结果：
+
+```
+    Volume of Box1 : 210
+    Volume of Box2 : 1560
+    Volume of Box3 : 5400
+```
+
+可重载/不可重载的运算符
+下面这张表列举了可以重载的运算符：
+
+|+	|-|	*	|/|	%|	^|
+|&	|\|	~	|!	|,|	=|
+|<	|>|	<=|	>=	|++|	--|
+|<<	|>>	|==|	!=|	&&	|\|\||
+|+=	|-=	|/=|	%=|	^=|	&=|
+|\|=	|\*=	|<<=|	>>=|	[ ]|	()|
+|->	|->*|	new	|new[ ]|	delete|	delete[ ]|
+
+下面这张表列举了不可以重载的运算符：
+
+|::	|.*	|.	|?:|
 
 
+### 运算符重载例子
+这里有各种操作符重载的例子来帮助你理解这一概念。
+
+|序号|	运算符和例子|
+|1|	一元运算符重载|
+|2|	二元运算符重载|
+|3|	关系运算符重载|
+|4	|输入/输出运算符重载|
+|5|	++ 和 -- 运算符重载|
+|6|	赋值运算符重载|
+|7|	函数 call() 运算符重载|
+|8	|下标[ ]运算符重载|
+|9|	类成员获取运算符 -< 重载|
 
 
+# 多态
 
+多态性意味着有多种形式。通常，多态发生在类之间存在层级关系且这些类有继承关系的时候。
 
+C++ 多态性是指不同的对象发送同一个消息，不同对象对应同一消息产生不同行为。
+
+考虑下面的例子，一个基类派生了其他的两类：
+
+```
+    #include <iostream> 
+    using namespace std;
+
+    class Shape {
+       protected:
+      int width, height;
+       public:
+      Shape( int a=0, int b=0)
+      {
+     		width = a;
+     		height = b;
+      }
+      int area()
+      {
+     		cout << "Parent class area :" <<endl;
+     		return 0;
+      }
+    };
+    class Rectangle: public Shape{
+       public:
+      Rectangle( int a=0, int b=0):Shape(a, b) { }
+      int area ()
+      { 
+     		cout << "Rectangle class area :" <<endl;
+     		return (width * height); 
+      }
+    };
+    class Triangle: public Shape{
+       public:
+      Triangle( int a=0, int b=0):Shape(a, b) { }
+      int area ()
+      { 
+     		cout << "Triangle class area :" <<endl;
+     		return (width * height / 2); 
+      }
+    };
+    // Main function for the program
+    int main( )
+    {
+       Shape *shape;
+       Rectangle rec(10,7);
+       Triangle  tri(10,5);
+
+       // store the address of Rectangle
+       shape = &rec;
+       // call rectangle area.
+       shape->area();
+
+       // store the address of Triangle
+       shape = &tri;
+       // call triangle area.
+       shape->area();
+
+       return 0;
+    }
+```
+
+上面的代码编译和执行时，它产生以下结果：
+
+```
+    Parent class area
+    Parent class area
+```
+
+输出结果不正确的原因是对函数 `area()` 的调用被编译器设置了一次，即在基类中定义的版本，这被称为对函数调用的静态分辨或者静态链接，静态链接就是在程序被执行之前函数调用是确定的。这有时也被称为早期绑定，因为函数 `area() `在编译程序期间是固定的。
+
+但是现在，让我们对程序做略微修改，并在 Shape 类中 `area()` 的声明之前加关键字 **virtual** ，它看起来像这样：
+
+```
+    class Shape {
+       protected:
+      int width, height;
+       public:
+      Shape( int a=0, int b=0)
+      {
+     		width = a;
+     		height = b;
+      }
+      virtual int area()
+      {
+     		cout << "Parent class area :" <<endl;
+     		return 0;
+      }
+    };
+```
+
+这轻微的修改后，前面的示例代码编译和执行时，它会产生以下结果：
+
+```
+    Rectangle class area
+    Triangle class area
+```
+
+这一次，编译器关注的是指针的内容而不是它的类型。因此，由于三角形和矩形类对象的地址被存储在形状类中，各自的 `area()` 函数可以被调用。
+
+正如你所看到的，每个子类都有一个对 `area()` 函数的实现。通常多态就是这样使用的。你有不同的类，它们都有一个的相同名字的函数，甚至有相同的参数，但是对这个函数有不同的实现。
+
+### 虚函数
+基类中的虚函数是一个使用关键字 **virtual** 声明的函数。派生类中已经对函数进行定义的情况下，定义一个基类的虚函数，就是要告诉编译器我们不想对这个函数进行静态链接。
+
+我们所希望的是根据调用函数的对象的类型对程序中在任何给定指针中被调用的函数的选择。这种操作被称为动态链接，或者后期绑定。
+
+### 纯虚函数
+可能你想把虚函数包括在基类中，以便它可以在派生类中根据该类的对象对函数进行重新定义，但在许多情况下，在基类中不能对虚函数给出有意义的实现。
+
+我们可以改变基类中的虚函数 area() 如下：
+
+```
+    class Shape {
+       protected:
+      int width, height;
+       public:
+      Shape( int a=0, int b=0)
+      {
+     		width = a;
+     		height = b;
+      }
+      // pure virtual function
+      virtual int area() = 0;
+    };
+```
+
+# 数据抽象
+
+数据抽象是指对外只提供基本信息并且隐藏他们的背景细节，即只呈现程序中所需的信息而没有提供细节。
+
+数据抽象是一种编程(和设计)技术，依赖于接口和实现的分离。
+
+让我们举一个现实生活中的例子。一个电视，你可以打开和关闭，改变频道，调整音量，并添加外部组件，比如扬声器，录像机，以及 DVD 播放器。但是你不知道它的内部细节，也就是说，你不知道它如何通过无线技术或者通过电缆接收信号，如何转化信号，以及最后将信号显示在屏幕上。
+
+因此，我们可以说电视机实现了外部接口与内部实现的清晰分离，你可以无需知道它的内部具体实现，就可以通过其外部接口比如电源按钮，更换频道，音量控制。
+
+现在，如果我们谈论的是 C++ 编程， C++ 类提供了大量数据抽象的例子。他们提供了大量的针对外部世界的公有函数来满足对象的功能或者操作对象数据，即外部函数不知道类在内部是如何实现的。
+
+例如，你的程序可以在不知道函数实际使用什么算法来对给定的值进行排序的情况下调用 `sort()` 函数。事实上，排序功能的底层实现可以在不同版本之间变化，只要接口保持不变，你的函数调用将仍然起作用。
+
+在 C++ 中，我们使用类来定义自己的抽象数据类型( ADT )。您可以使用类 ostream 的 cout 对象对流数据进行标准输出如下：
+
+```
+    #include <iostream>
+    using namespace std;
+
+    int main( )
+    {
+       cout << "Hello C++" <<endl;
+       return 0;
+    }
+```
+
+在这里，你不需要了解 cout 如何在用户的屏幕上显示文本。你只需要知道的公共接口和的 cout 底层实现是可以自由改变的。
+
+### 访问标号实施抽象
+在 C++ 中，我们使用访问标号定义抽象接口类。一个类可以包含零个或多个访问标签：
+
+- 成员定义了一个公有标号，程序的所有部分都可以访问这个公共标号。类型的数据抽象视图由其公有成员定义。
+- 使用类的代码不可以访问带有私有标号的成员。对于使用类的代码，私有部分隐藏了类的实现细节。
+
+一个访问标号可以出现的次数通常是没有限制的。每个访问标号指定了随后的成员定义的访问级别。这个指定的访问级别持续有效，知道遇到下一个访问标号或看到类定义提的右花括号为止。
+
+### 数据抽象的好处
+数据抽象提供了两个重要的优势：
+
+- 避免内部出现无意的，可能破坏对象状态的用户级错误。　　　　
+- 随着时间的推移类实现可能会根据需求或缺陷报告来做出修改，但是这种修改无需改变用户级代码。
+
+通过只在类的私有部分定义数据成员，类作者可以自由的对数据进行更改。如果实现更改，只需要检查类的代码看看这个改变可能造成什么影响。如果数据是公开的，那么任何可以直接访问旧的数据成员的函数都可能遭到破坏。
+
+### 数据抽象举例
+任何一个用公有和私有成员实现一个类的 C++ 程序都是数据抽象的一个例子。考虑下面的例子：
+
+```
+    #include <iostream>
+    using namespace std;
+
+    class Adder{
+       public:
+      // constructor
+      Adder(int i = 0)
+      {
+   			total = i;
+      }
+      // interface to outside world
+      void addNum(int number)
+      {
+      		total += number;
+      }
+      // interface to outside world
+      int getTotal()
+      {
+      		return total;
+      };
+       private:
+      // hidden data from outside world
+      int total;
+    };
+    int main( )
+    {
+       Adder a;
+
+       a.addNum(10);
+       a.addNum(20);
+       a.addNum(30);
+
+       cout << "Total " << a.getTotal() <<endl;
+       return 0;
+    }
+```
+
+编译和执行上面的代码时，它产生以下结果：
+
+```
+    Total 60
+```
+
+上面的类实现了把数字加起来，并且返回总和。公有成员 **addNum** 和 **getTotal** 是对外的接口，用户需要知道他们才能使用的类。私有成员 **total** 是用户不需要知道的，但是它是为保证程序正常运行类必要的。
+
+### 设计策略
+抽象使代码分离成接口和实现。所以在设计你的组件的时候，你必须保持接口独立于实现，因此，你才能做到在改变底层实现时，界面将保持不变。
+
+在这种情况下，无论任何程序使用这些接口，他们不会受到影响，只需要重新编译最新的实现。
+
+# 数据封装
+
+所有的 C++ 程序是由以下两个基本要素组成：
+
+- 程序语句(代码)：这是程序执行行为的一部分，他们被称为函数。　　　　
+- 程序数据：数据是受程序函数影响的信息。
+
+封装是一个面向对象编程的概念，它将数据和操作数据的函数结合在一起，并使其免受外部干扰和误用。数据封装是**数据隐藏**的重要面向对象编程概念。
+
+数据封装是一种将数据和使用数据的函数结合在一起的机制；数据抽象是一种只将接口公开并且向用户隐藏实现细节的机制。
+
+C++ 支持封装的属性和通过创建用户定义类型实现的数据隐藏，这称为类。我们已经研究过，一个类可以包含私有、保护和公有成员。默认情况下，所有定义在一个类中的成员是私有的。例如：
+
+```
+    class Box
+    {
+       public:
+      double getVolume(void)
+      {
+     	return length * breadth * height;
+      }
+       private:
+      double length;  // Length of a box
+      double breadth; // Breadth of a box
+      double height;  // Height of a box
+    };
+```
+
+变量 length 、breadth 和 height 都是私有的。这意味着只有 box 类的其他成员可以访问它们，而程序的任何其它的部分不能访问它们。这是一个封装的实现方式。　　　　
+
+要想使类的某个部分成为共有的(即访问您的程序的其他部分)，你必须在 **public** 关键字后声明它们。公有说明符后定义的所有变量或函数可以被程序中的其它函数访问。　　　　
+
+使一个类成为其它类的友元类就可以获得实现细节，降低封装。这个思想就是获得尽可能多的每个类的对其它类隐藏的细节。
+
+### 数据封装的例子
+任何一个实现有公有和私有成员的类的 C++ 程序都是一个数据封装和数据抽象的例子。考虑下面的例子：
+
+```
+    #include <iostream>
+    using namespace std;
+
+    class Adder{
+       public:
+      // constructor
+      Adder(int i = 0)
+      {
+    	total = i;
+      }
+      // interface to outside world
+      void addNum(int number)
+      {
+      	total += number;
+      }
+      // interface to outside world
+      int getTotal()
+      {
+      	return total;
+      };
+       private:
+      // hidden data from outside world
+      int total;
+    };
+    int main( )
+    {
+       Adder a;
+
+       a.addNum(10);
+       a.addNum(20);
+       a.addNum(30);
+
+       cout << "Total " << a.getTotal() <<endl;
+       return 0;
+    }
+```
+
+编译和执行上面的代码时，它产生以下结果：
+
+```
+    Total 60
+```
+
+上面的类实现了把数字加起来，并且返回总和。公有成员 **addNum** 和 **getTotal** 是对外的接口，用户需要知道他们才能使用的类。私有成员 **total** 是用户不需要知道的，但是它是为保证程序正常运行类所必要的。
+
+### 设计策略
+经过一段痛苦的经历,我们大多数人已经学会了使类成员在默认情况下是私有的,除非我们真的需要使它们变成公有的。这就是一个好的的封装。　　　　
+
+这个知识被频繁的应用于数据成员,它同样适用于所有成员，包括虚函数。
+
+# 接口 (抽象类)
+
+接口可以用来描述一个 C++ 类的行为或功能,但是并不需要对这个类进行实现。
+
+C++ 接口是通过抽象类来实现的，这些抽象类不应与数据抽象混淆，数据抽象的概念：概念结构是对现实世界的一种抽象，从实际的人、物、事和概念中抽取所关心的共同特性，忽略非本质的细节，把这些特性用各种概念精确地加以描述，这些概念组成了某种模型。
+
+一个抽象类的声明里至少要有一个函数作为纯虚函数。在函数形参表后面写上 “= 0” 以指定纯虚函数：
+
+```
+    class Box
+    { 
+       public:
+      // pure virtual function
+      virtual double getVolume() = 0;
+       private:
+      double length;  // Length of a box
+      double breadth; // Breadth of a box
+      double height;  // Height of a box
+    };
+```
+
+建立抽象类 (通常被称为一个ABC) 的目的是提供一个适当的并且其他类可以继承的基类。抽象类不能实例化对象并且只能作为一个接口使用。试图实例化一个抽象类的对象会导致编译错误。
+
+因此,如果一个抽象类的子类的需要实例化,它必须实现所有的虚函数,这意味着它支持抽象类的接口声明。如果在派生类中未能覆盖一个纯虚函数,然后试图实例化该类的对象,会导致一个编译错误。
+
+可用于实例化对象的类被称为具体类。
+
+### 抽象类样例
+考虑下面的例子,父类为基类提供了一个接口来实现函数 `getArea()`：
+
+```
+    #include <iostream>
+
+    using namespace std;
+
+    // Base class
+    class Shape 
+    {
+    public:
+       // pure virtual function providing interface framework.
+       virtual int getArea() = 0;
+       void setWidth(int w)
+       {
+      	width = w;
+       }
+       void setHeight(int h)
+       {
+      	height = h;
+       }
+    protected:
+       int width;
+       int height;
+    };
+
+    // Derived classes
+    class Rectangle: public Shape
+    {
+    public:
+       int getArea()
+       { 
+      	return (width * height); 
+       }
+    };
+    class Triangle: public Shape
+    {
+    public:
+       int getArea()
+       { 
+      	return (width * height)/2; 
+       }
+    };
+
+    int main(void)
+    {
+       Rectangle Rect;
+       Triangle  Tri;
+
+       Rect.setWidth(5);
+       Rect.setHeight(7);
+       // Print the area of the object.
+       cout << "Total Rectangle area: " << Rect.getArea() << endl;
+
+       Tri.setWidth(5);
+       Tri.setHeight(7);
+       // Print the area of the object.
+       cout << "Total Triangle area: " << Tri.getArea() << endl; 
+
+       return 0;
+    }
+```
+
+上面的代码编译和执行后,将产生以下结果:
+
+```
+    Total Rectangle area: 35
+    Total Triangle area: 17
+```
+
+### 设计策略
+一个面向对象的系统可能使用一个抽象基类提供一个普遍的和适合所有的外部应用程序的标准化接口。然后, 通过继承的抽象基类, 形成派生类。
+
+功能(即，公共函数)，即由外部应用程序提供的，作为抽象基类里面的纯虚函数。 那些纯虚函数是由派生类实现的，派生类对应于应用的特定类型。
+
+即使在系统已经定义之后， 这种架构还允许添加新的应用程序到系统中。
 
 
 
